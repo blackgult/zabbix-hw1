@@ -70,6 +70,7 @@ sudo nano /etc/zabbix/zabbix_server.conf
 systemctl restart zabbix-server zabbix-agent apache2
 systemctl enable zabbix-server zabbix-agent apache2
 
+
 ---
 
 ### Задание 2 
@@ -120,6 +121,7 @@ sudo iptables -A INPUT -p tcp --dport 10051 -j ACCEPT
 sudo iptables -P INPUT DROP
 systemctl restart zabbix-agent
 systemctl status zabbix-agent
+
 
 
 ---
