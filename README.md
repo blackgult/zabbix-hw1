@@ -43,7 +43,32 @@
 
 ### Решение 1
 1. Прикрепите в файл README.md скриншот авторизации в админке.
+![1-1](https://github.com/blackgult/zabbix-hw1/blob/main/1-1.PNG)
+
+![1-2](https://github.com/blackgult/zabbix-hw1/blob/main/1-2.PNG)
+
 2. Приложите в файл README.md текст использованных команд в GitHub.
+sudo apt update
+sudo apt upgrade
+sudo apt install apache2
+sudo systemctl enable apache2
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo -i -u postgres
+psql
+\q
+exit
+(Ссылка на zabbix)[ https://www.zabbix.com/ru/download?zabbix=6.0&os_distribution=ubuntu&os_version=22.04&components=server_frontend_agent&db=pgsql&ws=apache]
+wget https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4+ubuntu22.04_all.deb
+dpkg -i zabbix-release_6.0-4+ubuntu22.04_all.deb
+apt update
+apt install zabbix-server-pgsql zabbix-frontend-php php8.1-pgsql zabbix-apache-conf zabbix-sql-scripts zabbix-agent
+sudo -u postgres createuser --pwprompt zabbix
+sudo -u postgres createdb -O zabbix zabbix
+zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+sudo nano /etc/zabbix/zabbix_server.conf
+systemctl restart zabbix-server zabbix-agent apache2
+systemctl enable zabbix-server zabbix-agent apache2
 
 ---
 
@@ -66,9 +91,36 @@
 
 ### Решение 2
 1. Приложите в файл README.md скриншот раздела Configuration > Hosts, где видно, что агенты подключены к серверу
+![2-1](https://github.com/blackgult/zabbix-hw1/blob/main/2-1.PNG)
+
 2. Приложите в файл README.md скриншот лога zabbix agent, где видно, что он работает с сервером
+![2-2](https://github.com/blackgult/zabbix-hw1/blob/main/2-2.PNG)
+
 3. Приложите в файл README.md скриншот раздела Monitoring > Latest data для обоих хостов, где видны поступающие от агентов данные.
+![2-3](https://github.com/blackgult/zabbix-hw1/blob/main/2-3.PNG)
+
+![2-4](https://github.com/blackgult/zabbix-hw1/blob/main/2-4.PNG)
+
+![2-5](https://github.com/blackgult/zabbix-hw1/blob/main/2-5.PNG)
+
 4. Приложите в файл README.md текст использованных команд в GitHub
+sudo apt update
+sudo apt upgrade
+(Ссылка накоманды с установкой zabbix-агента)[ https://www.zabbix.com/ru/download?zabbix=6.0&os_distribution=ubuntu&os_version=22.04&components=agent&db=&ws=]
+wget https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4+ubuntu22.04_all.deb
+dpkg -i zabbix-release_6.0-4+ubuntu22.04_all.deb
+apt update
+apt install zabbix-agent
+systemctl restart zabbix-agent
+systemctl enable zabbix-agent
+systemctl status zabbix-agent
+sudo nano /etc/zabbix/zabbix_agentd.conf в файле переписал дописал ip-адрес моего заббикс-сервера
+sudo iptables -A INPUT -p tcp --dport 10050 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 10051 -j ACCEPT
+sudo iptables -P INPUT DROP
+systemctl restart zabbix-agent
+systemctl status zabbix-agent
+
 
 ---
 ## Задание 3 со звёздочкой*
